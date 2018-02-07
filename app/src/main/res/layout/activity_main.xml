@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mmproductions.trafficinfo.MainActivityKotlin"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20.0dp" />
+
+    <TextView
+        android:id="@+id/gpsLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20.0dp"
+        />
+
+    <Button
+        android:paddingTop="20dp"
+        android:id="@+id/breezometerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Make Breezometer Call"
+        android:onClick="onBreezometerButtonPressed"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/breezometerData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20.0dp"
+        />
+
+    <Button
+        android:paddingTop="20dp"
+        android:id="@+id/trafficButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Make TomTom Traffic Call"
+        android:onClick="onTrafficButtonPressed"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/trafficData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20.0dp"
+        />
+
+</LinearLayout>
