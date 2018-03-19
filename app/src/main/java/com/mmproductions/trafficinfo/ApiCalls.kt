@@ -27,13 +27,15 @@ class ApiCalls {
         val url = "https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json?key=uNXbMuwElInZECgC1f1b0kpxSA5yUHe5&unit=KMPH&point=$mLat,$mLon"
 
         val jsObjRequest = JsonObjectRequest(Request.Method.GET, url, null, Response.Listener { response ->
-            val flowSegmentData: JSONObject = response.get("flowSegmentData") as JSONObject
-            val freeFlowTravelTime = flowSegmentData.get("freeFlowTravelTime").toString().toDouble()
-            val currentTravelTime = flowSegmentData.get("currentTravelTime").toString().toDouble()
-            val currentTraffic = currentTravelTime / freeFlowTravelTime
-            trafficData.text = "Current traffic: " + currentTraffic
+            if (!response.toString(1).contains("error", true)) {
+                val flowSegmentData: JSONObject = response.get("flowSegmentData") as JSONObject
+                val freeFlowTravelTime = flowSegmentData.get("freeFlowTravelTime").toString().toDouble()
+                val currentTravelTime = flowSegmentData.get("currentTravelTime").toString().toDouble()
+                val currentTraffic = currentTravelTime / freeFlowTravelTime
+                trafficData.text = "Current traffic: " + currentTraffic
 
-            activity.trafficQuantity = currentTraffic
+                activity.trafficQuantity = currentTraffic
+            }
         }, Response.ErrorListener {
             // TODO Auto-generated method stub
         })
@@ -49,11 +51,13 @@ class ApiCalls {
         val url = "https://api.breezometer.com/baqi/?lat=$mLat&lon=$mLon&fields=dominant_pollutant_canonical_name,breezometer_aqi&key=3ab12452fdee438e9d6fdd95544d989f"
 
         val jsObjRequest = JsonObjectRequest(Request.Method.GET, url, null, Response.Listener { response ->
-            val aqi = (response.get("breezometer_aqi") as Int).toDouble()
-            val pollutant = response.get("dominant_pollutant_canonical_name")
-            breezometerData.text = "Polution level: " + aqi + "\nPredominant pollutant: " + pollutant
+            if (!response.toString(1).contains("error", true)) {
+                val aqi = (response.get("breezometer_aqi") as Int).toDouble()
+                val pollutant = response.get("dominant_pollutant_canonical_name")
+                breezometerData.text = "Polution level: " + aqi + "\nPredominant pollutant: " + pollutant
 
-            activity.airQuality = aqi
+                activity.airQuality = aqi
+            }
         }, Response.ErrorListener {
             // TODO Auto-generated method stub
         })
