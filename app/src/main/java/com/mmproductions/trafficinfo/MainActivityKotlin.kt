@@ -7,9 +7,14 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
+import android.widget.RadioButton
 import android.widget.TextView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import java.lang.Thread.sleep
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by Marco on 2/4/2018.
@@ -17,11 +22,14 @@ import com.google.android.gms.location.LocationServices
 class MainActivityKotlin : AppCompatActivity() {
 
     private var mFusedLocationClient: FusedLocationProviderClient? = null
-    private var mLat: String? = null
-    private var mLon: String? = null
+    private var mLat: String = "0.0"
+    private var mLon: String = "0.0"
+    public var trafficQuantity: Double = 0.0
+    public var airQuality: Double = 0.0
     private var service: ApiCalls? = null
     private var trafficData: TextView? = null
     private var breezometerData: TextView? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +38,7 @@ class MainActivityKotlin : AppCompatActivity() {
         service = ApiCalls()
 
         trafficData = findViewById(R.id.trafficData)
+        breezometerData = findViewById(R.id.breezometerData)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         val locationTextView = findViewById<View>(R.id.gpsLocation) as TextView
@@ -44,8 +53,7 @@ class MainActivityKotlin : AppCompatActivity() {
             // for ActivityCompat#requestPermissions for more details.
             return
         }
-        mFusedLocationClient!!.lastLocation
-                .addOnSuccessListener(this) { location ->
+        mFusedLocationClient?.lastLocation?.addOnSuccessListener(this) { location ->
                     // Got last known location. In some rare situations this can be null.
                     if (location != null) {
                         // Logic to handle location object
@@ -56,14 +64,49 @@ class MainActivityKotlin : AppCompatActivity() {
 
                     }
                 }
+
+
+        //Declare the timer
+        val t = Timer()
+        //Set the schedule function and rate
+        t.scheduleAtFixedRate(object : TimerTask() {
+
+            override fun run() {
+                //Called each time when 1000 milliseconds (1 second) (the period parameter)
+                onBreezometerButtonPressed(findViewById(R.id.breezometerData))
+                onTrafficButtonPressed(findViewById(R.id.breezometerData))
+
+                sleep(5000)
+
+
+                onFirestoreButtonPressed(findViewById(R.id.breezometerData))
+            }
+
+        },
+                //Set how long before to start calling the TimerTask (in milliseconds)
+                10000,
+                //Set the amount of time between each execution (in milliseconds)
+                60000)
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
 
     fun onBreezometerButtonPressed(view: View) {
-        service?.getBreezometerData(mLat!!, mLon!!, this, breezometerData!!)
+        service?.getBreezometerData(mLat, mLon, this, breezometerData!!, this)
     }
 
     fun onTrafficButtonPressed(view: View) {
-        service?.getTomTomdata(mLat!!, mLon!!, this, trafficData!!)
+        service?.getTomTomdata(mLat, mLon, this, trafficData!!, this)
+    }
+
+    fun onFirestoreButtonPressed(view: View) {
+        val cal = java.util.Calendar.getInstance()
+        val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss Z")
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
+        val indoors = findViewById<RadioButton>(R.id.indoors).isChecked
+
+        service?.uploadToFirestore(sdf.format(cal.getTime()), mLat, mLon, trafficQuantity.toString(),
+                airQuality.toString(), indoors);
     }
 }

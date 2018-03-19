@@ -5,7 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mmproductions.trafficinfo.MainActivityKotlin"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:keepScreenOn="true" >
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:checkedButton="@id/indoors">
+
+        <RadioButton
+            android:id="@+id/indoors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Indoors"/>
+
+        <RadioButton
+            android:id="@+id/outdoors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Outdoors"/>
+    </RadioGroup>
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,5 +77,15 @@
         android:layout_gravity="center_horizontal"
         android:textSize="20.0dp"
         />
+
+
+    <Button
+        android:paddingTop="20dp"
+        android:id="@+id/uploadFirestore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload to Firestore"
+        android:onClick="onFirestoreButtonPressed"
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>
