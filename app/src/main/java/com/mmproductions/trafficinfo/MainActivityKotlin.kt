@@ -1,6 +1,10 @@
 package com.mmproductions.trafficinfo
 
 import android.Manifest
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -15,6 +19,10 @@ import com.google.android.gms.location.LocationServices
 import java.lang.Thread.sleep
 import java.text.SimpleDateFormat
 import java.util.*
+
+
+
+
 
 /**
  * Created by Marco on 2/4/2018.
@@ -89,6 +97,19 @@ class MainActivityKotlin : AppCompatActivity() {
                 60000)
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        val intent = PendingIntent.getActivity(
+                this,
+                0,
+                Intent(intent),
+                intent.flags)
+
+        Thread.setDefaultUncaughtExceptionHandler {
+            paramThread, paramThrowable ->
+            val mgr = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 2000, intent)
+            System.exit(2)
+             }
     }
 
 

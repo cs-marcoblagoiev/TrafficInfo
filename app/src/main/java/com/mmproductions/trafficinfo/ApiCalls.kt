@@ -14,15 +14,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import org.json.JSONObject
 
 
-
-
-
 /**
  * Created by Marco on 2/7/2018.
  */
 
 class ApiCalls {
-    var queue : RequestQueue? = null
+    var queue: RequestQueue? = null
     fun getTomTomdata(mLat: String, mLon: String, context: Context, trafficData: TextView, activity: MainActivityKotlin) {
         val url = "https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json?key=uNXbMuwElInZECgC1f1b0kpxSA5yUHe5&unit=KMPH&point=$mLat,$mLon"
 
@@ -52,11 +49,13 @@ class ApiCalls {
 
         val jsObjRequest = JsonObjectRequest(Request.Method.GET, url, null, Response.Listener { response ->
             if (!response.toString(1).contains("error", true)) {
-                val aqi = (response.get("breezometer_aqi") as Int).toDouble()
-                val pollutant = response.get("dominant_pollutant_canonical_name")
-                breezometerData.text = "Polution level: " + aqi + "\nPredominant pollutant: " + pollutant
+                if (response.get("breezometer_aqi") != null) {
+                    val aqi = (response.get("breezometer_aqi") as Int).toDouble()
+                    val pollutant = response.get("dominant_pollutant_canonical_name")
+                    breezometerData.text = "Polution level: " + aqi + "\nPredominant pollutant: " + pollutant
 
-                activity.airQuality = aqi
+                    activity.airQuality = aqi
+                }
             }
         }, Response.ErrorListener {
             // TODO Auto-generated method stub
