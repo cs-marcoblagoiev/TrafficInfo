@@ -61,7 +61,7 @@ class ApiCalls {
             // TODO Auto-generated method stub
         })
 
-        val queue = Volley.newRequestQueue(context)
+        val queue = AppController.getInstance().getRequestQueue();
         // Access the RequestQueue through your singleton class.
         queue.add(jsObjRequest)
     }
