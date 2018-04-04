@@ -45,7 +45,7 @@ class ApiCalls {
     }
 
     fun getBreezometerData(mLat: String, mLon: String, context: Context, breezometerData: TextView, activity: MainActivityKotlin) {
-        val url = "https://api.breezometer.com/baqi/?lat=$mLat&lon=$mLon&fields=dominant_pollutant_canonical_name,breezometer_aqi&key=3ab12452fdee438e9d6fdd95544d989f"
+        val url = "https://api.breezometer.com/baqi/?lat=$mLat&lon=$mLon&fields=dominant_pollutant_canonical_name,breezometer_aqi&key=0727fae4cf604d3c964d72a1f93cf55f"
 
         val jsObjRequest = JsonObjectRequest(Request.Method.GET, url, null, Response.Listener { response ->
             if (!response.toString(1).contains("error", true)) {
